@@ -7,6 +7,8 @@ use Prismaticoder\LaravelPromptManager\Enums\VersionSelector;
 
 abstract class LLMPrompt
 {
+    private ?VersionManager $versionManager = null;
+
     public static function make(mixed ...$args): self
     {
         return new static(...$args);
@@ -19,8 +21,10 @@ abstract class LLMPrompt
      */
     public function generate(?string $version = null): PromptResult
     {
+        $this->versionManager = $this->versions();
+
         $version = $version ?? $this->determineVersion();
-        $prompt = $this->versions()->getPrompt($version);
+        $prompt = $this->versionManager->getPrompt($version);
         $tokenCount = call_user_func($this->tokenCounter($prompt));
         
         return new PromptResult($version, $prompt, $tokenCount);
@@ -59,7 +63,7 @@ abstract class LLMPrompt
      */
     protected function getAvailableVersions(): array
     {
-        return $this->versions()->getAvailableVersions();
+        return array_keys($this->versionManager->versions);
     }
 
     /**
@@ -92,7 +96,7 @@ abstract class LLMPrompt
         return fn(string $prompt): int => (int) ceil(strlen($prompt) / 3.7);
     }
 
-    abstract protected function versions(): PromptVersions;
+    abstract protected function versions(): VersionManager;
 
     abstract protected function defaultVersion(): string;
 } 
