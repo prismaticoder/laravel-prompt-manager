@@ -8,7 +8,7 @@ use RuntimeException;
 
 class VersionManager
 {
-    public array $versions;
+    private array $versions;
 
     public function __construct(array $versions)
     {
@@ -33,6 +33,11 @@ class VersionManager
         }
 
         $this->versions = $versions;
+    }
+
+    public function getVersions(): array
+    {
+        return $this->versions;
     }
 
     public function getPrompt(string $version): string

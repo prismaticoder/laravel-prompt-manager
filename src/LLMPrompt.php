@@ -63,7 +63,7 @@ abstract class LLMPrompt
      */
     protected function getAvailableVersions(): array
     {
-        return array_keys($this->versionManager->versions);
+        return array_keys($this->versionManager->getVersions());
     }
 
     /**
