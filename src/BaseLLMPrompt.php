@@ -31,7 +31,7 @@ abstract class BaseLLMPrompt
 
         $version = $version ?? $this->determineVersion();
         $prompt = $this->versionManager->getPrompt($version);
-        $tokenCount = call_user_func($this->tokenCounter($prompt));
+        $tokenCount = call_user_func($this->tokenCounter(), $prompt);
         $name = $this->getName();
         
         return new PromptResult($version, $prompt, $tokenCount, $name);
@@ -96,11 +96,18 @@ abstract class BaseLLMPrompt
     }
 
     /**
-     * Count tokens in a prompt (can be overridden with a more accurate implementation).
+     * Get the token counting function for prompts.
+     * 
+     * The default implementation provides a simple approximation based on character count,
+     * where 1 token ≈ 4 characters. For more accurate counting, override this method
+     * with a model-specific tokenizer.
+     * 
+     * @see https://platform.openai.com/tokenizer
+     * @return Closure Returns a function that accepts a string and returns an integer token count
      */
-    protected function tokenCounter(string $prompt): Closure
+    protected function tokenCounter(): Closure
     {
-        return fn(string $prompt): int => (int) ceil(strlen($prompt) / 3.7);
+        return fn(string $prompt): int => (int) ceil(strlen($prompt) / 4);
     }
 
     /**
