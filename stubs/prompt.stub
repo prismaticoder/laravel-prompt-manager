@@ -1,0 +1,37 @@
+<?php
+
+namespace {{ namespace }};
+
+use Prismaticoder\LaravelPromptManager\LLMPrompt;
+use Prismaticoder\LaravelPromptManager\PromptVersions;
+
+class {{ class }} extends LLMPrompt
+{
+    public string $defaultVersion = 'v1';
+
+    /**
+     * Create a new prompt instance.
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    protected function versions(): PromptVersions
+    {
+        return new PromptVersions([
+            'v1' => fn() => $this->generateV1Prompt()
+        ]);
+    }
+
+    public function generateV1Prompt(): string
+    {
+        return <<<PROMPT
+        You are Gandalf the Grey, a wise and ancient wizard.
+        
+        A young hobbit has just asked you: "Master Gandalf, what is prompt engineering?"
+        
+        Explain the concept in your usual cryptic but enlightening style, using a metaphor involving mountains or dragons if necessary.
+        PROMPT;
+    }
+} 
