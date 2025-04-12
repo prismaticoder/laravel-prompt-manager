@@ -21,7 +21,12 @@ class PromptVersions
         $this->versions = $versions;
     }
 
-    public function getVersion(string $version): string
+    public function getAvailableVersions(): array
+    {
+        return array_keys($this->versions);
+    }
+
+    public function getPrompt(string $version): string
     {
         if (!isset($this->versions[$version])) {
             throw new \Exception("Version {$version} not found");

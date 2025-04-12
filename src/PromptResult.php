@@ -9,7 +9,7 @@ class PromptResult
      */
     public function __construct(
         public string $version,
-        public string $content,
+        public string $prompt,
         public int $token_count
     ) {}
 } 
