@@ -9,6 +9,12 @@ abstract class LLMPrompt
 {
     private ?VersionManager $versionManager = null;
 
+    /**
+     * Create a new prompt instance.
+     * 
+     * @param mixed ...$args
+     * @return static
+     */
     public static function make(mixed ...$args): self
     {
         return new static(...$args);
@@ -26,8 +32,9 @@ abstract class LLMPrompt
         $version = $version ?? $this->determineVersion();
         $prompt = $this->versionManager->getPrompt($version);
         $tokenCount = call_user_func($this->tokenCounter($prompt));
+        $name = $this->getName();
         
-        return new PromptResult($version, $prompt, $tokenCount);
+        return new PromptResult($version, $prompt, $tokenCount, $name);
     }
 
     /**
@@ -59,17 +66,9 @@ abstract class LLMPrompt
     }
 
     /**
-     * Get all available registered prompt versions.
-     */
-    protected function getAvailableVersions(): array
-    {
-        return array_keys($this->versionManager->getVersions());
-    }
-
-    /**
      * Get a random version.
      */
-    protected function getRandomVersion(): string
+    private function getRandomVersion(): string
     {
         $versions = $this->getAvailableVersions();
         
@@ -78,6 +77,14 @@ abstract class LLMPrompt
         }
         
         return $versions[array_rand($versions)];
+    }
+
+    /**
+     * Get all available registered prompt versions.
+     */
+    protected function getAvailableVersions(): array
+    {
+        return array_keys($this->versionManager->getVersions());
     }
 
     /**
@@ -94,6 +101,14 @@ abstract class LLMPrompt
     protected function tokenCounter(string $prompt): Closure
     {
         return fn(string $prompt): int => (int) ceil(strlen($prompt) / 3.7);
+    }
+
+    /**
+     * Get the name of the prompt.
+     */
+    protected function getName(): string
+    {
+        return class_basename($this);
     }
 
     abstract protected function versions(): VersionManager;
