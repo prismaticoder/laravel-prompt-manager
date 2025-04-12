@@ -192,4 +192,4 @@ Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## License
 
-The MIT License (MIT). See [License File](LICENSE.md).
+The MIT License (MIT). See [License File](LICENSE).

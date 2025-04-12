@@ -1,7 +1,7 @@
 {
   "name": "prismaticoder/laravel-prompt-manager",
   "description": "Laravel package for managing AI prompts, versioning, and integrations with foundational models.",
-  "type": "clibrary",
+  "type": "library",
   "license": "MIT",
   "autoload": {
     "psr-4": {
@@ -10,7 +10,7 @@
   },
   "authors": [
     {
-      "name": "prismaticoder",
+      "name": "Jesutomiwa Salam",
       "email": "jesutomiwathefirst@gmail.com"
     }
   ],
