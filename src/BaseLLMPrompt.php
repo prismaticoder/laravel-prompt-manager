@@ -5,7 +5,7 @@ namespace Prismaticoder\LaravelPromptManager;
 use Closure;
 use Prismaticoder\LaravelPromptManager\Enums\VersionSelector;
 
-abstract class LLMPrompt
+abstract class BaseLLMPrompt
 {
     private ?VersionManager $versionManager = null;
 

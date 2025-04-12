@@ -2,19 +2,22 @@
 
 namespace {{ namespace }};
 
-use Prismaticoder\LaravelPromptManager\LLMPrompt;
+use Prismaticoder\LaravelPromptManager\BaseLLMPrompt;
 use Prismaticoder\LaravelPromptManager\VersionManager;
 
-class {{ class }} extends LLMPrompt
+class {{ class }} extends BaseLLMPrompt
 {
-    public string $defaultVersion = 'v1';
-
     /**
      * Create a new prompt instance.
      */
     public function __construct()
     {
         //
+    }
+
+    protected function defaultVersion(): string
+    {
+        return 'v1';
     }
 
     protected function versions(): VersionManager
