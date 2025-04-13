@@ -118,7 +118,17 @@ abstract class BaseLLMPrompt
         return class_basename($this);
     }
 
+    /**
+     * Define all relevant versions for the prompt.
+     *
+     * @return VersionManager
+     */
     abstract protected function versions(): VersionManager;
 
+    /**
+     * Get the default version to use for the prompt if no version selector is provided.
+     * 
+     * @return string The default version for the prompt.
+     */
     abstract protected function defaultVersion(): string;
 } 
