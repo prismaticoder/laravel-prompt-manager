@@ -1,5 +1,10 @@
 # Laravel Prompt Manager
 
+[![Tests](https://github.com/prismaticoder/laravel-prompt-manager/actions/workflows/tests.yml/badge.svg)](https://github.com/prismaticoder/laravel-prompt-manager/actions)
+[![Latest Stable Version](https://img.shields.io/packagist/v/prismaticoder/laravel-prompt-manager.svg)](https://packagist.org/packages/prismaticoder/laravel-prompt-manager)
+[![Total Downloads](https://img.shields.io/packagist/dt/prismaticoder/laravel-prompt-manager.svg)](https://packagist.org/packages/prismaticoder/laravel-prompt-manager)
+[![License](https://img.shields.io/github/license/prismaticoder/laravel-prompt-manager.svg)](LICENSE)
+
 A Laravel package built for the next generation of LLM engineers — seamlessly manage, version, and test your AI prompts with the same rigor you bring to your code. Designed for developers who want to apply real software engineering principles to prompt engineering and build AI features that scale with confidence.
 
 ## Table of Contents
