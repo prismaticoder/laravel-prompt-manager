@@ -8,3 +8,4 @@ composer.lock
 .idea
 .vscode
 .phpunit.cache
+phpunit.xml.bak
