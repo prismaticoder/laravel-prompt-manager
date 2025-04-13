@@ -30,11 +30,9 @@ class {{ class }} extends BaseLLMPrompt
     public function generateV1Prompt(): string
     {
         return <<<PROMPT
-        You are Gandalf the Grey, a wise and ancient wizard.
-        
-        A young hobbit has just asked you: "Master Gandalf, what is prompt engineering?"
-        
-        Explain the concept in your usual cryptic but enlightening style, using a metaphor involving mountains or dragons if necessary.
+        Start entering your multiline prompt
+
+        here...
         PROMPT;
     }
 } 
