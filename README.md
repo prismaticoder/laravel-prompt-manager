@@ -1,6 +1,20 @@
 # Laravel Prompt Manager
 
-A powerful Laravel package for managing, versioning, and testing AI prompts, built for developers who need clean, testable, and version-controlled prompts for LLM integrations.
+A Laravel package built for the next generation of LLM engineers — seamlessly manage, version, and test your AI prompts with the same rigor you bring to your code. Designed for developers who want to apply real software engineering principles to prompt engineering and build AI features that scale with confidence.
+
+## Table of Contents
+- [Features](#features)
+- [Installation](#installation)
+- [Basic Usage](#basic-usage)
+  - [Generating and Using Prompts](#generating-and-using-prompts)
+- [Advanced Usage](#advanced-usage)
+  - [Model-Specific Versions](#model-specific-versions)
+  - [Working with Existing Template Storage](#working-with-existing-template-storage)
+  - [A/B Testing Made Easy](#ab-testing-made-easy)
+  - [Context-Aware Version Selection](#context-aware-version-selection)
+  - [Custom Token Counting](#custom-token-counting)
+- [Best Practices](#best-practices)
+- [License](#license)
 
 ## Features
 
@@ -94,6 +108,11 @@ Create model-specific prompts and dynamically select versions:
 ```php
 class CustomerSupportPrompt extends BaseLLMPrompt
 {
+    protected function defaultVersion(): string
+    {
+        return 'v1-gpt3.5'; // Only defaults to this version when no version selector is defined.
+    }
+
     protected function versions(): VersionManager
     {
         return new VersionManager([
@@ -106,7 +125,7 @@ class CustomerSupportPrompt extends BaseLLMPrompt
     protected function versionSelector(): Closure
     {
         return function(array $versions) {
-            $model = config('ai.default_model');
+            $model = config('services.llm.default_model');
             return match($model) {
                 'gpt-4' => 'v1-gpt4',
                 'claude' => 'v1-claude',
@@ -117,16 +136,73 @@ class CustomerSupportPrompt extends BaseLLMPrompt
 }
 ```
 
-### A/B Testing with Random Selection
+### Working with Existing Template Storage
 
-Optimize prompts using random selection:
+If you already store prompt templates in a database or registry, you can easily integrate them:
 
 ```php
+class TransactionFraudAnalysisPrompt extends BaseLLMPrompt
+{
+    private Transaction $transaction;
+    private array $riskMetrics;
+
+    public function __construct(Transaction $transaction, array $riskMetrics)
+    {
+        $this->transaction = $transaction;
+        $this->riskMetrics = $riskMetrics;
+    }
+
+    protected function versions(): VersionManager
+    {
+        return new VersionManager([
+            'v1' => fn() => $this->getTemplateAndCompile('standard'),
+            'v2-high-risk' => fn() => $this->getTemplateAndCompile('high_risk'),
+        ]);
+    }
+
+    private function getTemplateAndCompile(string $templateKey): string
+    {
+        // Fetch template from your existing storage
+        $template = PromptTemplate::findByKey($templateKey);
+
+        return collect([
+            'amount' => $this->transaction->amount,
+            'merchant' => $this->transaction->merchant_name,
+            'risk_score' => $this->riskMetrics['score'],
+        ])->reduce(
+            fn(string $prompt, $value, $key) => str_replace("{{$key}}", $value, $prompt),
+            $template
+        );
+    }
+
+    protected function versionSelector(): Closure
+    {
+        return fn() => $this->riskMetrics['score'] > 0.7 ? 'v2-high-risk' : 'v1';
+    }
+}
+
+// Usage example:
+$prompt = TransactionFraudAnalysisPrompt::make($transaction, $riskMetrics);
+$result = $prompt->generate(); // Version selected based on risk score
+```
+
+### A/B Testing Made Easy
+
+Easily run A/B tests on your prompts by enabling random version selection:
+
+```php
+use Prismaticoder\LaravelPromptManager\Enums\VersionSelector;
+
 class ProductCopyPrompt extends BaseLLMPrompt
 {
     protected function versionSelector(): VersionSelector
     {
         return VersionSelector::RANDOM;
+    }
+
+    protected function defaultVersion(): string
+    {
+        return 'v1-formal'; // Only defaults to this version when no version selector is defined.
     }
 
     protected function versions(): VersionManager
@@ -185,10 +261,6 @@ class ComplexPrompt extends BaseLLMPrompt
 - **Abstract Complex Prompts**: Break down large prompts into smaller methods.
 - **Semantic Versioning**: Use clear naming conventions (e.g., `v1-gpt4`, `v1-formal`).
 - **Testing**: Use built-in random selection for effective A/B testing.
-
-## Contributing
-
-Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## License
 
