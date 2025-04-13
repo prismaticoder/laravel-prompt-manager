@@ -1,6 +1,22 @@
 {
   "name": "prismaticoder/laravel-prompt-manager",
-  "description": "Laravel package for managing AI prompts, versioning, and integrations with foundational models.",
+  "description": "Laravel package for seamlessly managing, versioning and testing AI prompts when integrating with LLMs.",
+  "keywords": [
+    "laravel",
+    "llm",
+    "prompt",
+    "prompt-engineering",
+    "openai",
+    "ai",
+    "nlp",
+    "chatgpt",
+    "laravel-prompt",
+    "text-generation",
+    "laravel-package",
+    "gpt",
+    "artificial-intelligence",
+    "language-models"
+  ],
   "type": "library",
   "license": "MIT",
   "autoload": {
