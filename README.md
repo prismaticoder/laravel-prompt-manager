@@ -8,6 +8,7 @@
 A Laravel package built for the next generation of LLM engineers — seamlessly manage, version, and test your AI prompts with the same rigor you bring to your code. Designed for developers who want to apply real software engineering principles to prompt engineering and build AI features that scale with confidence.
 
 ## Table of Contents
+
 - [Features](#features)
 - [Installation](#installation)
 - [Basic Usage](#basic-usage)
@@ -100,8 +101,8 @@ $prompt = ProductDescriptionPrompt::make('Ergonomic Chair', [
 
 // Default version
 $result = $prompt->generate();
-echo $result->prompt; // The generated prompt
-echo "Version used: {$result->version}"
+echo $result->prompt; // The generated prompt text
+echo "Version used: {$result->version}" // v1
 echo "Token count: {$result->token_count}";
 
 // Specific version
@@ -253,7 +254,7 @@ class TutorialPrompt extends BaseLLMPrompt
 
 ### Custom Token Counting
 
-The default token counting strategy is a simple estimation (text length divided by 4). To improve accuracy, you can override it with a custom token counter like Tiktoken:
+The default token counting strategy is a simple estimation (text length divided by 4, based on [OpenAI's GPT tokenizer approximation](https://platform.openai.com/tokenizer)). To improve accuracy, you can override it with a custom token counter like Tiktoken:
 
 ```php
 class ComplexPrompt extends BaseLLMPrompt
