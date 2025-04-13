@@ -13,7 +13,7 @@ class PromptVersionManager
     public function __construct(array $versions)
     {
         if (empty($versions)) {
-            throw new \Exception('Versions array cannot be empty');
+            throw new InvalidArgumentException('Versions array cannot be empty');
         }
 
         foreach ($versions as $version => $generator) {
