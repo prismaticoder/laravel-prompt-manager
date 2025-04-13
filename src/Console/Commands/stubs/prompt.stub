@@ -3,7 +3,7 @@
 namespace {{ namespace }};
 
 use Prismaticoder\LaravelPromptManager\BaseLLMPrompt;
-use Prismaticoder\LaravelPromptManager\VersionManager;
+use Prismaticoder\LaravelPromptManager\PromptVersionManager;
 
 class {{ class }} extends BaseLLMPrompt
 {
@@ -20,9 +20,9 @@ class {{ class }} extends BaseLLMPrompt
         return 'v1';
     }
 
-    protected function versions(): VersionManager
+    protected function versions(): PromptVersionManager
     {
-        return new VersionManager([
+        return new PromptVersionManager([
             'v1' => fn() => $this->generateV1Prompt()
         ]);
     }

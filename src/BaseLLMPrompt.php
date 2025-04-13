@@ -7,7 +7,7 @@ use Prismaticoder\LaravelPromptManager\Enums\VersionSelector;
 
 abstract class BaseLLMPrompt
 {
-    private ?VersionManager $versionManager = null;
+    private ?PromptVersionManager $versionManager = null;
 
     /**
      * Create a new prompt instance.
@@ -121,9 +121,9 @@ abstract class BaseLLMPrompt
     /**
      * Define all relevant versions for the prompt.
      *
-     * @return VersionManager
+     * @return PromptVersionManager
      */
-    abstract protected function versions(): VersionManager;
+    abstract protected function versions(): PromptVersionManager;
 
     /**
      * Get the default version to use for the prompt if no version selector is provided.

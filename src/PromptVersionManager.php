@@ -6,7 +6,7 @@ use InvalidArgumentException;
 use Prismaticoder\LaravelPromptManager\Exceptions\VersionNotFound;
 use RuntimeException;
 
-class VersionManager
+class PromptVersionManager
 {
     private array $versions;
 

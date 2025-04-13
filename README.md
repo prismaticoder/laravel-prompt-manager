@@ -39,9 +39,13 @@ Generate a new prompt class:
 php artisan make:prompt ProductDescriptionPrompt
 ```
 
+This will create a new `ProductDescriptionPrompt` class in the `App/Prompts` directory
+
 ```php
+namespace App\Prompts;
+
 use Prismaticoder\LaravelPromptManager\BaseLLMPrompt;
-use Prismaticoder\LaravelPromptManager\VersionManager;
+use Prismaticoder\LaravelPromptManager\PromptVersionManager;
 
 class ProductDescriptionPrompt extends BaseLLMPrompt
 {
@@ -54,9 +58,9 @@ class ProductDescriptionPrompt extends BaseLLMPrompt
         $this->features = $features;
     }
 
-    protected function versions(): VersionManager
+    protected function versions(): PromptVersionManager
     {
-        return new VersionManager([
+        return new PromptVersionManager([
             'v1' => fn() => $this->generateBasicPrompt(),
             'v1-creative' => fn() => $this->generateCreativePrompt(),
             'v1-technical' => fn() => $this->generateTechnicalPrompt(),
@@ -113,9 +117,9 @@ class CustomerSupportPrompt extends BaseLLMPrompt
         return 'v1-gpt3.5'; // Only defaults to this version when no version selector is defined.
     }
 
-    protected function versions(): VersionManager
+    protected function versions(): PromptVersionManager
     {
-        return new VersionManager([
+        return new PromptVersionManager([
             'v1-gpt3.5' => fn() => $this->basePromptWithConstraints(2000),
             'v1-gpt4' => fn() => $this->basePromptWithConstraints(4000),
             'v1-claude' => fn() => $this->generateClaudePrompt(),
@@ -152,9 +156,9 @@ class TransactionFraudAnalysisPrompt extends BaseLLMPrompt
         $this->riskMetrics = $riskMetrics;
     }
 
-    protected function versions(): VersionManager
+    protected function versions(): PromptVersionManager
     {
-        return new VersionManager([
+        return new PromptVersionManager([
             'v1' => fn() => $this->getTemplateAndCompile('standard'),
             'v2-high-risk' => fn() => $this->getTemplateAndCompile('high_risk'),
         ]);
@@ -205,9 +209,9 @@ class ProductCopyPrompt extends BaseLLMPrompt
         return 'v1-formal'; // Only defaults to this version when no version selector is defined.
     }
 
-    protected function versions(): VersionManager
+    protected function versions(): PromptVersionManager
     {
-        return new VersionManager([
+        return new PromptVersionManager([
             'v1-formal' => fn() => $this->formalTone(),
             'v1-casual' => fn() => $this->casualTone(),
             'v1-persuasive' => fn() => $this->persuasiveTone(),
